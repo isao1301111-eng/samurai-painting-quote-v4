@@ -42,6 +42,19 @@ Automatic warnings are shown for common on-site risks (e.g., switching from oil-
 
 ---
 
+## 📸 Screenshots / スクリーンショット
+
+**v5 Main UI — 🛡️ STRICT MODE toggle (top right)**
+![v5 Main UI](%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202026-05-20%20215029.png)
+
+**Hallucination Guard — Verification Protocol panel (error detection)**
+![Verification Panel](%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202026-05-20%20215230.png)
+
+**AI Verification Report — appended to quote in STRICT MODE**
+![AI Verification Report](%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202026-05-20%20215354.png)
+
+---
+
 ## 💼 Background / 開発背景
 
 **[English]**  

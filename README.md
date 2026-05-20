@@ -1,7 +1,8 @@
-# Samurai Painting Quote Tool v4
+# Samurai Painting Quote Tool v4 → v5
 **Smart Quotation Tool for Professional Painters / プロ塗装職人向けスマート見積もりツール**
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Click_Here-brightgreen)](https://isao1301111-eng.github.io/samurai-painting-quote-v4/)
+[![v4 Live Demo](https://img.shields.io/badge/v4_Live_Demo-Click_Here-blue)](https://isao1301111-eng.github.io/samurai-painting-quote-v4/)
+[![v5 + Hallucination Guard](https://img.shields.io/badge/v5_%F0%9F%9B%A1%EF%B8%8F_Hallucination_Guard-Try_Now-00e676)](https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v5.html)
 
 ---
 
@@ -34,7 +35,10 @@ Automatic warnings are shown for common on-site risks (e.g., switching from oil-
 
 ## 🚀 Live Demo / デモ
 
-**Try it now → [https://isao1301111-eng.github.io/samurai-painting-quote-v4/](https://isao1301111-eng.github.io/samurai-painting-quote-v4/)**
+| Version | URL |
+|---|---|
+| **v4** | [https://isao1301111-eng.github.io/samurai-painting-quote-v4/](https://isao1301111-eng.github.io/samurai-painting-quote-v4/) |
+| **v5 🛡️** | [https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v5.html](https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v5.html) |
 
 ---
 
@@ -117,8 +121,6 @@ v5では **ハルシネーション防止プロトコル v1.0** を導入。見�
 9. ✅ 合計額サニティチェック
 
 **エラー時は見積もり生成をブロック。** STRICTモードON時、見積書末尾に「AI Verification Report」セクションを付加。
-
----
 
 ---
 

@@ -898,6 +898,51 @@ function runVerification(){
     checks.push({status:'pass',msg:isEN?`Total $${fmt2(grandTotal)} (ex GST) — reasonable range`:`合計 $${fmt2(grandTotal)}（GST抜き）— 妥当な範囲`});
   }
 
+  // CHECK 10: Paint volume re-verification (independent recalculation)
+  activeSurfs.forEach(s=>{
+    const st=surfState[s.id];
+    const r=calcSurf(s);
+    if(!r||!r.area)return;
+    const mat=MATERIALS[st.mat];
+    const cond=CONDITIONS[st.cond];
+    const expectedCoats=st.coats+(cond.coatAdd||0);
+    const expectedLiters=(r.area/s.cov)*expectedCoats*mat.paintMult;
+    const diff=Math.abs(expectedLiters-r.liters);
+    if(diff>0.01){
+      checks.push({status:'fail',msg:isEN?`${s.en}: Paint volume mismatch — expected ${expectedLiters.toFixed(1)}L, got ${r.liters.toFixed(1)}L (calculation error)`:`${s.ja}: 塗料量不一致 — 期待値${expectedLiters.toFixed(1)}L、実値${r.liters.toFixed(1)}L（計算エラー）`});
+    } else {
+      checks.push({status:'pass',msg:isEN?`${s.en}: Paint volume verified — ${r.liters.toFixed(1)}L (re-calculated independently)`:`${s.ja}: 塗料量検証済み — ${r.liters.toFixed(1)}L（独立再計算）`});
+    }
+  });
+
+  // CHECK 11: Paint consumption rate — physical plausibility (mL/m²/coat)
+  activeSurfs.forEach(s=>{
+    const r=calcSurf(s);
+    if(!r||!r.area||!r.coats)return;
+    const mlPerM2PerCoat=(r.liters/r.area/r.coats)*1000;
+    if(mlPerM2PerCoat<50){
+      checks.push({status:'warn',msg:isEN?`${s.en}: Paint usage ${mlPerM2PerCoat.toFixed(0)}mL/m²/coat is unusually LOW (normal: 70–150mL) — verify coverage`:`${s.ja}: 塗料消費量 ${mlPerM2PerCoat.toFixed(0)}mL/m²/回 は異常に少ない（正常: 70–150mL） — 塗布量を確認`});
+    } else if(mlPerM2PerCoat>200){
+      checks.push({status:'warn',msg:isEN?`${s.en}: Paint usage ${mlPerM2PerCoat.toFixed(0)}mL/m²/coat is unusually HIGH (normal: 70–150mL) — verify coverage`:`${s.ja}: 塗料消費量 ${mlPerM2PerCoat.toFixed(0)}mL/m²/回 は異常に多い（正常: 70–150mL） — 塗布量を確認`});
+    } else {
+      checks.push({status:'pass',msg:isEN?`${s.en}: Paint usage ${mlPerM2PerCoat.toFixed(0)}mL/m²/coat — within physical range (70–200mL)`:`${s.ja}: 塗料消費量 ${mlPerM2PerCoat.toFixed(0)}mL/m²/回 — 正常範囲内（70–200mL）`});
+    }
+  });
+
+  // CHECK 12: Paint cost ratio (paint cost vs total surface cost)
+  activeSurfs.forEach(s=>{
+    const r=calcSurf(s);
+    if(!r||!r.tot)return;
+    const paintRatio=r.paintCost/r.tot;
+    if(paintRatio>0.55){
+      checks.push({status:'warn',msg:isEN?`${s.en}: Paint cost is ${(paintRatio*100).toFixed(0)}% of total — unusually high (normal: 15–45%) — verify paint grade or area`:`${s.ja}: 塗料費が合計の${(paintRatio*100).toFixed(0)}% — 異常に高い（正常: 15–45%）— グレード・面積を確認`});
+    } else if(paintRatio<0.05){
+      checks.push({status:'warn',msg:isEN?`${s.en}: Paint cost is only ${(paintRatio*100).toFixed(0)}% of total — unusually low — verify inputs`:`${s.ja}: 塗料費が合計の${(paintRatio*100).toFixed(0)}%のみ — 異常に低い — 入力を確認`});
+    } else {
+      checks.push({status:'pass',msg:isEN?`${s.en}: Paint cost ratio ${(paintRatio*100).toFixed(0)}% — within normal range (5–55%)`:`${s.ja}: 塗料費比率 ${(paintRatio*100).toFixed(0)}% — 正常範囲内（5–55%）`});
+    }
+  });
+
   return checks;
 }
 

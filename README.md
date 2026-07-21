@@ -1,8 +1,9 @@
-# Samurai Painting Quote Tool v4 → v5
+# Samurai Painting Quote Tool v4 → v6
 **Smart Quotation Tool for Professional Painters / プロ塗装職人向けスマート見積もりツール**
 
 [![v4 Live Demo](https://img.shields.io/badge/v4_Live_Demo-Click_Here-blue)](https://isao1301111-eng.github.io/samurai-painting-quote-v4/)
 [![v5 + Hallucination Guard](https://img.shields.io/badge/v5_%F0%9F%9B%A1%EF%B8%8F_Hallucination_Guard-Try_Now-00e676)](https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v5.html)
+[![v6 + Saved History](https://img.shields.io/badge/v6_%F0%9F%93%82_Saved_History-Try_Now-C9A84C)](https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v6.html)
 
 ---
 
@@ -39,6 +40,7 @@ Automatic warnings are shown for common on-site risks (e.g., switching from oil-
 |---|---|
 | **v4** | [https://isao1301111-eng.github.io/samurai-painting-quote-v4/](https://isao1301111-eng.github.io/samurai-painting-quote-v4/) |
 | **v5 🛡️** | [https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v5.html](https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v5.html) |
+| **v6 📂** | [https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v6.html](https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v6.html) |
 
 ---
 
@@ -78,7 +80,8 @@ I am currently transitioning my career toward **AI Consulting and Digital Automa
 | File | Version | Description |
 |---|---|---|
 | `index.html` | v4 | Material-Aware AI Quote Generator |
-| `samurai-painting-quote-v5.html` | v5 | + Hallucination Guard Protocol v1.0 |
+| `samurai-painting-quote-v5.html` | v5 | + Hallucination Guard Protocol v1.0 (12-point) |
+| `samurai-painting-quote-v6.html` | v6 | + Saved Quotes & Clients (history, restore, JSON backup) |
 
 ---
 
@@ -140,6 +143,36 @@ v5では **ハルシネーション防止プロトコル v1.0** を導入。見�
 12. ✅ **塗料費比率チェック** — 塗料費が表面合計に占める割合が異常（正常5〜55%）なら警告
 
 **エラー時は見積もり生成をブロック。** STRICTモードON時、見積書末尾に「AI Verification Report」セクションを付加。
+
+---
+
+## 📂 v6: Saved Quotes & Clients / 履歴・顧客管理
+
+**[English]**  
+v6 adds a **persistence layer** on top of v5 — every generated quote can be saved and reused, turning the tool from a one-shot calculator into a lightweight quote ledger.
+
+- 💾 **Save** — store a generated quote with full client info, all inputs, and its Hallucination Guard result
+- 📂 **History & Clients tab** — searchable list by client name / address / quote number
+- ↩ **Restore** — reopen any past quote in one click to edit and regenerate
+- ⧉ **Duplicate** — spin off an alternate plan for the same client under a new quote number
+- 📤📥 **JSON Export / Import** — back up or move all data between devices
+- Compact quote cards show **total area (m²)** and **paint volume (L)** at a glance; a 🛡️ **Verified** chip marks quotes that passed the 12-point Guard
+
+Data is stored locally in the browser (`localStorage`) — **no server, no API, single HTML file**, GitHub Pages–ready.
+
+**[日本語]**  
+v6ではv5の上に**永続化層**を追加。生成した見積もりを保存・再利用でき、単発の計算ツールから軽量な**見積もり台帳**へと進化しました。
+
+- 💾 **保存** — お客様情報・全入力・ハルシネーション検証結果ごと見積もりを保存
+- 📂 **履歴・顧客管理タブ** — 顧客名／住所／見積番号で検索
+- ↩ **復元** — 過去の見積もりをワンクリックで再表示・編集・再生成
+- ⧉ **複製** — 同じ顧客の別プランを新しい見積番号で作成
+- 📤📥 **JSONエクスポート／インポート** — 全データのバックアップ・端末間移行
+- コンパクトなカードに**総面積（m²）**と**塗料量（L）**を表示。12項目のGuardを通過した見積もりには🛡️**検証済**チップを表示
+
+データはブラウザ内（`localStorage`）に保存 — **サーバー不要・API不要・単一HTML**、GitHub Pages対応。
+
+**Portfolio significance:** Shows the tool maturing from a calculator into a usable business system — saved history and client records demonstrate real workflow value, and set the foundation for v6's next phase (natural-language input verified by the Hallucination Guard).
 
 ---
 

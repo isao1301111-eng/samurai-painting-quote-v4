@@ -281,7 +281,7 @@ select option{background:var(--black);}
 .faces-grade label{margin:0;font-size:9px;color:#7f9a88;}
 .faces-grade select{background:var(--black);border:1px solid #444;color:var(--offwhite);padding:5px 7px;font-size:11px;font-family:'Inter',sans-serif;outline:none;}
 .faces-body{display:flex;flex-direction:column;gap:7px;}
-.face-row{display:grid;grid-template-columns:auto 1.3fr 1.3fr 72px 58px auto;gap:6px;align-items:center;}
+.face-row{display:grid;grid-template-columns:auto 1.1fr 1.1fr 66px 60px 50px auto;gap:5px;align-items:center;}
 .face-idx{width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#00e676;color:#053d20;font-family:'Bebas Neue',sans-serif;font-size:12px;border-radius:50%;}
 .face-row select,.face-row input{background:var(--black);border:1px solid #444;color:var(--offwhite);padding:7px 8px;font-size:11.5px;font-family:'Inter',sans-serif;outline:none;min-width:0;width:100%;}
 .face-row select:focus,.face-row input:focus{border-color:#00e676;}
@@ -290,7 +290,7 @@ select option{background:var(--black);}
 .face-empty{font-size:11px;color:#6a655d;padding:6px 2px;}
 .face-add{margin-top:9px;cursor:pointer;border:1px solid #00e676;background:transparent;color:#00e676;padding:8px 14px;font-size:11px;letter-spacing:.5px;font-family:inherit;}
 .face-add:hover{background:rgba(0,230,118,.08);}
-@media(max-width:600px){.face-row{grid-template-columns:auto 1fr 1fr;grid-auto-rows:auto;}.face-row .face-idx{grid-row:span 2;}.face-del{grid-column:3;justify-self:end;}}
+@media(max-width:600px){.face-row{grid-template-columns:1fr 1fr 1fr;gap:6px;}.face-row .face-idx{grid-column:1/-1;width:auto;height:auto;border-radius:0;background:transparent;color:#00e676;justify-self:start;font-size:11px;letter-spacing:1px;}.face-del{grid-column:3;justify-self:end;}}
 </style>
 </head>
 <body>
@@ -521,7 +521,7 @@ const ITEMS=[
   {id:'gutter',   en:'Fascia Gutter (横樋)',   ja:'横樋', icon:'🏗️', rates:{standard:12,premium:15,luxury:20},unit:'lm', perUnit:true, defMat:'aluminium', defCond:'water_good'},
   {id:'downpipe', en:'Downpipe (縦樋)',         ja:'縦樋', icon:'🔩', rates:{standard:15,premium:18,luxury:24},unit:'lm', perUnit:true, defMat:'aluminium', defCond:'water_good'},
   {id:'eaves',    en:'Eaves / Soffit',         ja:'軒天', icon:'🪵', rates:{standard:12,premium:16,luxury:22},unit:'lm', perUnit:true, defMat:'timber',    defCond:'water_good'},
-  {id:'fascia',   en:'Fascia Board',           ja:'破風板', icon:'📐', rates:{standard:12,premium:16,luxury:22},unit:'lm', perUnit:true, defMat:'timber',    defCond:'water_good'},
+  {id:'fascia',   en:'Fascia Board',           ja:'破風板', icon:'📐', rates:{standard:15,premium:22,luxury:30},unit:'lm', perUnit:true, defMat:'timber',    defCond:'water_good'},
   {id:'door',     en:'Door',                   ja:'ドア', icon:'🚪', rates:{standard:90,premium:120,luxury:160},unit:'unit',sides:true, defMat:'timber',    defCond:'water_good'},
   {id:'window',   en:'Window Frame',           ja:'窓枠', icon:'🪟', rates:{standard:60,premium:90,luxury:130}, unit:'unit',sides:true, defMat:'aluminium', defCond:'water_good'},
   {id:'trim',     en:'Skirting / Trim',        ja:'巾木', icon:'📐', rates:{standard:10,premium:14,luxury:20},  unit:'lm', perUnit:true, defMat:'timber',    defCond:'water_good'},
@@ -601,14 +601,7 @@ function buildSurfCards(){
         <label class="face-chk"><input type="checkbox" ${st.split?'checked':''} onchange="toggleSplit('${s.id}')"> <span>${lang==='en'?'🧩 Split by face — different material per wall face (e.g. 2× brick + 2× weatherboard)':'🧩 面ごとに分ける — 壁面ごとに材質を変更（例: レンガ2面＋サイディング2面）'}</span></label>
         <div class="faces ${st.split?'open':''}" id="faces_${s.id}">
           <div class="faces-head">
-            <span>${lang==='en'?'PER-FACE — material · existing paint · area · coats':'面ごと — 材質・既存塗膜・面積・回数'}</span>
-            <div class="faces-grade"><label>${lang==='en'?'GRADE':'グレード'}</label>
-              <select onchange="surfState['${s.id}'].grade=this.value;recalcAll()">
-                <option value="standard" ${st.grade==='standard'?'selected':''}>Standard</option>
-                <option value="premium" ${st.grade==='premium'?'selected':''}>Premium</option>
-                <option value="luxury" ${st.grade==='luxury'?'selected':''}>Luxury</option>
-              </select>
-            </div>
+            <span>${lang==='en'?'PER-FACE — material · paint · grade · area · coats':'面ごと — 材質・塗膜・グレード・面積・回数'}</span>
           </div>
           <div class="faces-body" id="facesBody_${s.id}"></div>
           <button class="face-add" onclick="addFace('${s.id}')">＋ ${lang==='en'?'Add face':'面を追加'}</button>
@@ -628,6 +621,11 @@ function renderFaces(id){
       <div class="face-idx">${i+1}</div>
       <select onchange="surfState['${id}'].faces[${i}].mat=this.value;recalcAll()" title="${isEN?'Material':'材質'}">${matOptions(f.mat)}</select>
       <select onchange="surfState['${id}'].faces[${i}].cond=this.value;recalcAll()" title="${isEN?'Existing paint':'既存塗膜'}">${condOptions(f.cond)}</select>
+      <select onchange="surfState['${id}'].faces[${i}].grade=this.value;recalcAll()" title="${isEN?'Paint grade':'グレード'}">
+        <option value="standard" ${f.grade==='standard'?'selected':''}>Std</option>
+        <option value="premium" ${(f.grade||'premium')==='premium'?'selected':''}>Prm</option>
+        <option value="luxury" ${f.grade==='luxury'?'selected':''}>Lux</option>
+      </select>
       <input type="number" min="0" placeholder="m²" value="${f.area}" oninput="surfState['${id}'].faces[${i}].area=this.value;recalcAll()" title="${isEN?'Area m²':'面積 ㎡'}">
       <select onchange="surfState['${id}'].faces[${i}].coats=+this.value;recalcAll()" title="${isEN?'Coats':'回数'}">
         <option value="1" ${f.coats===1?'selected':''}>×1</option>
@@ -641,11 +639,11 @@ function toggleSplit(id){
   const st=surfState[id];
   st.split=!st.split;
   if(st.split&&(!st.faces||!st.faces.length)){
-    st.faces=[{mat:st.mat,cond:st.cond,area:st.area||'',coats:st.coats},{mat:st.mat,cond:st.cond,area:'',coats:st.coats}];
+    st.faces=[{mat:st.mat,cond:st.cond,area:st.area||'',coats:st.coats,grade:st.grade},{mat:st.mat,cond:st.cond,area:'',coats:st.coats,grade:st.grade}];
   }
   buildSurfCards(); recalcAll();
 }
-function addFace(id){const st=surfState[id];if(!st.faces)st.faces=[];st.faces.push({mat:st.mat,cond:st.cond,area:'',coats:st.coats});renderFaces(id);recalcAll();}
+function addFace(id){const st=surfState[id];if(!st.faces)st.faces=[];st.faces.push({mat:st.mat,cond:st.cond,area:'',coats:st.coats,grade:st.grade});renderFaces(id);recalcAll();}
 function removeFace(id,i){surfState[id].faces.splice(i,1);renderFaces(id);recalcAll();}
 
 function buildItemCards(){
@@ -808,7 +806,7 @@ function calcSurf(s){
   const st=surfState[s.id];
   if(!st.on)return 0;
   if(st.split && st.faces && st.faces.length){
-    const units=st.faces.map(f=>{const area=parseFloat(f.area)||0;if(!area)return null;return calcUnit(s,f.mat,f.cond,area,f.coats||st.coats,st.grade);}).filter(Boolean);
+    const units=st.faces.map(f=>{const area=parseFloat(f.area)||0;if(!area)return null;return calcUnit(s,f.mat,f.cond,area,f.coats||st.coats,f.grade||st.grade);}).filter(Boolean);
     if(!units.length)return 0;
     const agg=units.reduce((a,u)=>({area:a.area+u.area,liters:a.liters+u.liters,paintCost:a.paintCost+u.paintCost,labCost:a.labCost+u.labCost,prepCost:a.prepCost+u.prepCost,tot:a.tot+u.tot}),{area:0,liters:0,paintCost:0,labCost:0,prepCost:0,tot:0});
     return {...agg,coats:units[0].coats,grade:st.grade,labRate:agg.labCost/agg.area,prepRate:agg.prepCost/agg.area,matName:lang==='en'?'Mixed':'複数材質',condName:'',split:true,units};
@@ -940,9 +938,9 @@ function generateQuote(checks){
     html+=`<tr class="gh"><td colspan="5">${isEN?'▸  SURFACES':'▸  面・壁 等'}</td></tr>`;
     surfRows.forEach(r=>{
       if(r.split){
-        html+=`<tr><td>${r.icon}</td><td><b>${r.name}</b></td><td><span style="font-size:10px;color:#555">${isEN?'Mixed materials':'複数材質'} · ${r.units.length}${isEN?' faces':'面'}</span></td><td class="r">${r.area.toFixed(1)}m² ${isEN?'total':'合計'} (${r.grade})</td><td class="r">—</td></tr>`;
+        html+=`<tr><td>${r.icon}</td><td><b>${r.name}</b></td><td><span style="font-size:10px;color:#555">${isEN?'Mixed materials':'複数材質'} · ${r.units.length}${isEN?' faces':'面'}</span></td><td class="r">${r.area.toFixed(1)}m² ${isEN?'total':'合計'}</td><td class="r">—</td></tr>`;
         r.units.forEach((u,ui)=>{
-          html+=`<tr><td></td><td style="padding-left:16px;color:#666">${isEN?'Face ':'面'}${ui+1}: ${u.matName} / ${u.condName}${u.coatAdd?' ⚠️+1':''}</td><td></td><td class="r">${u.area}m² × ${u.coats} ${isEN?'coats':'回'}</td><td class="r">$${fmt2(u.tot)}</td></tr>`;
+          html+=`<tr><td></td><td style="padding-left:16px;color:#666">${isEN?'Face ':'面'}${ui+1}: ${u.matName} / ${u.condName}${u.coatAdd?' ⚠️+1':''}</td><td></td><td class="r">${u.area}m² × ${u.coats}${isEN?'c':'回'} · ${u.grade}</td><td class="r">$${fmt2(u.tot)}</td></tr>`;
         });
         html+=`<tr class="sub"><td></td><td colspan="3" style="text-align:right;font-size:10px">${isEN?'Subtotal':'小計'} — ${r.name} · ${isEN?'paint':'塗料'} ${r.liters.toFixed(1)}L</td><td class="r">$${fmt2(r.tot)}</td></tr>`;
       } else {
@@ -1443,7 +1441,7 @@ function applyState(rec){
   document.getElementById('notes').value=rec.notes||'';
   surfState=JSON.parse(JSON.stringify(rec.surf||{}));
   itemState=JSON.parse(JSON.stringify(rec.item||{}));
-  SURFS.forEach(s=>{if(!surfState[s.id])surfState[s.id]={on:false,mat:s.defMat,cond:s.defCond,area:'',coats:s.defCoats,grade:s.defGrade,split:false,faces:[]};const st=surfState[s.id];if(!Array.isArray(st.faces))st.faces=[];if(typeof st.split!=='boolean')st.split=false;});
+  SURFS.forEach(s=>{if(!surfState[s.id])surfState[s.id]={on:false,mat:s.defMat,cond:s.defCond,area:'',coats:s.defCoats,grade:s.defGrade,split:false,faces:[]};const st=surfState[s.id];if(!Array.isArray(st.faces))st.faces=[];if(typeof st.split!=='boolean')st.split=false;st.faces.forEach(f=>{if(!f.grade)f.grade=st.grade||'premium';});});
   ITEMS.forEach(it=>{if(!itemState[it.id])itemState[it.id]={on:false,mat:it.defMat,cond:it.defCond,qty:'',grade:'premium',sides:2};});
   buildSurfCards(); buildItemCards(); buildExtras();
   const ex=rec.extras||{};
@@ -1577,9 +1575,32 @@ function parseDemo(text){
   else if(has('床','デッキ','floor','deck')) surfId='floor';
   else if(has('フェンス','塀','fence')) surfId='fence';
   else if((has('屋内','室内','内壁','interior'))&&!has('外壁','exterior')) surfId='wall';
+  // Multi-material faces (walls): detect 2+ distinct wall materials, optional face counts
+  const MATW={plaster:['レンガ','れんが','brick','モルタル','render'],weatherboard:['サイディング','羽目板','weatherboard','siding'],timber:['木部','ウッド','timber cladding'],aluminium:['アルミ','aluminium','aluminum'],concrete:['コンクリート','concrete','セメント','cement'],steel:['鉄板','スチール','steel sheet'],fibre:['ファイバー','fibre','fiber cement']};
+  const detected=[];
+  for(const mk in MATW){
+    let hit=false,cnt=0;
+    for(const w of MATW[mk]){
+      if(text.includes(w)||t.includes(w.toLowerCase())){
+        hit=true;
+        const esc=w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+        const mm=text.match(new RegExp('(\\d+)\\s*(?:面|sides?|faces?)\\s*(?:の|は|が)?\\s*'+esc,'i'))||text.match(new RegExp(esc+'\\s*(?:を|が|は)?\\s*(\\d+)\\s*(?:面|sides?|faces?)','i'));
+        if(mm)cnt=Math.min(6,parseInt(mm[1])||1);
+        break;
+      }
+    }
+    if(hit)detected.push({mat:mk,count:cnt||1});
+  }
+  if((surfId==='exterior'||surfId==='wall') && detected.length>=2){
+    const totalFaces=detected.reduce((a,d)=>a+d.count,0);
+    const per=area?+(area/totalFaces).toFixed(1):0;
+    const faces=[];
+    detected.forEach(d=>{for(let k=0;k<d.count;k++)faces.push({material:d.mat,condition,area:per||0,coats,grade:'premium'});});
+    return {jobs:[...new Set(jobs)],surfaces:[{id:surfId,area:area||0,material,condition,coats,faces}],stories,notes:(text||'').trim().slice(0,220),_demo:true};
+  }
   return {
     jobs:[...new Set(jobs)],
-    surfaces:[{id:surfId,area:area||0,material,condition,coats}],
+    surfaces:[{id:surfId,area:area||0,material,condition,coats,grade:'premium'}],
     stories, notes:(text||'').trim().slice(0,220),
     _demo:true
   };
@@ -1587,6 +1608,9 @@ function parseDemo(text){
 
 // ── LIVE PARSER (Claude API, browser-direct with user key) ──
 async function parseAPI(text,key){
+  const MATENUM=['plaster','timber','weatherboard','aluminium','concrete','steel','fibre'];
+  const CONDENUM=['new','water_good','water_fair','water_bad','oil_cont','oil_switch','unknown'];
+  const GRADEENUM=['standard','premium','luxury'];
   const schema={type:'object',additionalProperties:false,
     properties:{
       jobs:{type:'array',items:{type:'string',enum:['Exterior','Interior','New Build','Renovation','Roof','Commercial']}},
@@ -1594,14 +1618,23 @@ async function parseAPI(text,key){
         properties:{
           id:{type:'string',enum:['ceiling','wall','exterior','roof','floor','fence']},
           area:{type:'number'},
-          material:{type:'string',enum:['plaster','timber','aluminium','concrete','steel','fibre']},
-          condition:{type:'string',enum:['new','water_good','water_fair','water_bad','oil_cont','oil_switch','unknown']},
-          coats:{type:'integer'}
+          material:{type:'string',enum:MATENUM},
+          condition:{type:'string',enum:CONDENUM},
+          coats:{type:'integer'},
+          grade:{type:'string',enum:GRADEENUM},
+          faces:{type:'array',items:{type:'object',additionalProperties:false,
+            properties:{
+              material:{type:'string',enum:MATENUM},
+              condition:{type:'string',enum:CONDENUM},
+              area:{type:'number'},
+              coats:{type:'integer'},
+              grade:{type:'string',enum:GRADEENUM}
+            },required:['material','condition','area','coats','grade']}}
         },required:['id','area','material','condition','coats']}},
       stories:{type:'integer'},
       notes:{type:'string'}
     },required:['jobs','surfaces','stories','notes']};
-  const sys="You extract structured data for a NSW (Australia) house-painting quote from a free-text job description (English or Japanese). Map to the given enums. surfaces[].id: ceiling/wall(interior)/exterior/roof/floor/fence. material: plaster/timber/aluminium/concrete/steel/fibre. condition: new, water_good, water_fair, water_bad(peeling), oil_cont(oil→oil), oil_switch(oil→water), unknown. area in m² (0 if not stated). stories 1-3. coats 1-3 (default 2). Only include surfaces explicitly implied. Do not invent numbers not present in the text — use 0 for unknown area. Return notes as a short paraphrase.";
+  const sys="You extract structured data for a NSW (Australia) house-painting quote from a free-text job description (English or Japanese). Map to the given enums. surfaces[].id: ceiling/wall(interior)/exterior/roof/floor/fence. material: plaster(incl. brick/render), timber, weatherboard(=siding/羽目板/サイディング), aluminium, concrete, steel, fibre. condition: new, water_good, water_fair, water_bad(peeling), oil_cont(oil→oil), oil_switch(oil→water), unknown. grade: standard/premium/luxury (default premium). area in m² (0 if not stated). stories 1-3. coats 1-3 (default 2). MULTI-MATERIAL WALLS: if a wall (id 'exterior' or 'wall') has different materials on different faces (e.g. 2 sides brick + 2 sides weatherboard), return that surface with a faces[] array — one entry per face, each with its own material/condition/area/coats/grade — instead of a single material. If only one material, omit faces. Only include surfaces explicitly implied. Do not invent numbers not present in the text — use 0 for unknown area. Return notes as a short paraphrase.";
   const res=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
@@ -1622,11 +1655,19 @@ function applyParsed(r){
   (r.surfaces||[]).forEach(s=>{
     if(!surfState[s.id])return;
     const st=surfState[s.id];
+    const surfDef=SURFS.find(x=>x.id===s.id)||{};
     st.on=true;
-    if(s.area) st.area=String(s.area);
-    if(s.material&&MATERIALS[s.material]) st.mat=s.material;
-    if(s.condition&&CONDITIONS[s.condition]) st.cond=s.condition;
-    if(s.coats) st.coats=Math.min(3,Math.max(1,s.coats));
+    if(Array.isArray(s.faces)&&s.faces.length&&surfDef.faceable){
+      st.split=true;
+      st.faces=s.faces.map(f=>({mat:(MATERIALS[f.material]?f.material:st.mat),cond:(CONDITIONS[f.condition]?f.condition:st.cond),area:f.area?String(f.area):'',coats:Math.min(3,Math.max(1,f.coats||2)),grade:(['standard','premium','luxury'].includes(f.grade)?f.grade:'premium')}));
+    } else {
+      st.split=false;
+      if(s.area) st.area=String(s.area);
+      if(s.material&&MATERIALS[s.material]) st.mat=s.material;
+      if(s.condition&&CONDITIONS[s.condition]) st.cond=s.condition;
+      if(s.coats) st.coats=Math.min(3,Math.max(1,s.coats));
+      if(s.grade&&['standard','premium','luxury'].includes(s.grade)) st.grade=s.grade;
+    }
   });
   if(r.notes) document.getElementById('notes').value=r.notes;
   buildSurfCards();
@@ -1637,17 +1678,23 @@ function renderAiResult(r,viaAPI){
   const isEN=lang==='en';
   const el=document.getElementById('aiResult');
   const src=viaAPI?(isEN?'Claude (claude-opus-4-8)':'Claude（claude-opus-4-8）'):(isEN?'offline demo parser':'オフラインのデモ解析');
-  const mats={plaster:isEN?'Plaster':'プラスター',timber:isEN?'Timber':'木部',aluminium:isEN?'Aluminium':'アルミ',concrete:isEN?'Concrete':'コンクリート',steel:isEN?'Steel':'鉄',fibre:isEN?'Fibre Cement':'ファイバー'};
+  const mats={plaster:isEN?'Plaster':'プラスター',timber:isEN?'Timber':'木部',weatherboard:isEN?'Weatherboard':'サイディング',aluminium:isEN?'Aluminium':'アルミ',concrete:isEN?'Concrete':'コンクリート',steel:isEN?'Steel':'鉄',fibre:isEN?'Fibre Cement':'ファイバー'};
   const conds={new:isEN?'New':'新築',water_good:isEN?'Water good':'水性良好',water_fair:isEN?'Water fair':'水性劣化',water_bad:isEN?'Peeling':'剥離',oil_cont:isEN?'Oil→Oil':'油性継続',oil_switch:isEN?'Oil→Water':'油性→水性',unknown:isEN?'Unknown':'不明'};
   const chips=[];
   (r.surfaces||[]).forEach(s=>{
     const nm=(SURFS.find(x=>x.id===s.id)||{});
-    chips.push(`${isEN?(nm.en||s.id):(nm.ja||s.id)}${s.area?' '+s.area+'m²':''}`);
-    chips.push(`${mats[s.material]||s.material}`);
-    chips.push(`${conds[s.condition]||s.condition}`);
+    const sname=isEN?(nm.en||s.id):(nm.ja||s.id);
+    if(Array.isArray(s.faces)&&s.faces.length){
+      chips.push(`${sname} · ${s.faces.length}${isEN?' faces':'面'}`);
+      s.faces.forEach((f,i)=>chips.push(`${i+1}) ${mats[f.material]||f.material}${f.area?' '+f.area+'m²':''} · ${conds[f.condition]||f.condition}`));
+    } else {
+      chips.push(`${sname}${s.area?' '+s.area+'m²':''}`);
+      chips.push(`${mats[s.material]||s.material}`);
+      chips.push(`${conds[s.condition]||s.condition}`);
+    }
   });
   (r.jobs||[]).forEach(j=>chips.push(j));
-  const noArea=(r.surfaces||[]).some(s=>!s.area);
+  const noArea=(r.surfaces||[]).some(s=>(Array.isArray(s.faces)&&s.faces.length)?s.faces.some(f=>!f.area):!s.area);
   el.innerHTML=`
     <div class="box ${noArea?'warnbox':''}">
       <b>🤖 ${isEN?'AI extracted':'AIが抽出'}</b> ${isEN?'via':'—'} ${src}:

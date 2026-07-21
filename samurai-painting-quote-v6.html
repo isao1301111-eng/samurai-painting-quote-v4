@@ -235,6 +235,40 @@ select option{background:var(--black);}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast .k{color:#00e676;font-size:16px;}
 @media(max-width:600px){.hstats{grid-template-columns:1fr;}.hrec{grid-template-columns:auto 1fr;}.hrec .right{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center;border-top:1px solid #2a2a2a;padding-top:8px;}}
+
+/* ── v6: AI FREE-TEXT INPUT ── */
+.ai-sec{border-left:3px solid #00e676;}
+.ai-sec .sec-title{color:#00e676;}
+.ai-sec .sec-title::after{background:#173;}
+.ai-badge{font-size:9px;letter-spacing:1px;background:#00e676;color:#053d20;padding:2px 7px;font-weight:700;font-family:'Bebas Neue',sans-serif;}
+.ai-lead{font-size:11.5px;color:#9a948a;line-height:1.7;margin-bottom:10px;}
+.ai-lead b{color:#00e676;}
+#aiText{width:100%;min-height:74px;background:var(--black);border:1px solid #2f5f43;color:var(--offwhite);padding:11px 12px;font-size:12.5px;font-family:'Inter',sans-serif;outline:none;resize:vertical;line-height:1.6;}
+#aiText:focus{border-color:#00e676;}
+#aiText::placeholder{color:#5d574e;}
+.ai-controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:9px;}
+.ai-parse{display:inline-flex;align-items:center;gap:6px;cursor:pointer;padding:10px 16px;background:#00e676;border:none;color:#053d20;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;font-weight:700;}
+.ai-parse:hover{filter:brightness(1.08);}
+.ai-mode-pill{font-size:10.5px;letter-spacing:.5px;padding:5px 10px;border:1px solid var(--mid);color:#9a948a;}
+.ai-mode-pill.live{border-color:#00e676;color:#00e676;background:rgba(0,230,118,.07);}
+.ai-gear{margin-left:auto;cursor:pointer;border:1px solid var(--mid);background:transparent;color:#9a948a;padding:8px 11px;font-size:11px;letter-spacing:.5px;font-family:inherit;}
+.ai-gear:hover{border-color:#8a857c;color:var(--offwhite);}
+.ai-settings{display:none;margin-top:10px;border:1px solid #333;background:#111;padding:11px 13px;}
+.ai-settings.show{display:block;}
+.ai-settings input{width:100%;background:var(--black);border:1px solid #444;color:var(--offwhite);padding:8px 10px;font-size:12px;font-family:'Inter',monospace;outline:none;}
+.ai-settings input:focus{border-color:#00e676;}
+.ai-settings .row{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap;}
+.ai-settings .save{cursor:pointer;padding:7px 13px;background:#00e676;border:none;color:#053d20;font-weight:700;font-size:11px;letter-spacing:.5px;font-family:inherit;}
+.ai-settings .clear{cursor:pointer;padding:7px 13px;background:transparent;border:1px solid var(--warn);color:var(--warn);font-size:11px;font-family:inherit;}
+.ai-settings .hint{font-size:10px;color:#6a655d;line-height:1.7;margin-top:8px;}
+.ai-result{margin-top:12px;}
+.ai-result .box{border:1px solid #00e676;border-left:3px solid #00e676;background:rgba(0,230,118,.05);padding:12px 14px;font-size:11.5px;line-height:1.7;}
+.ai-result .box.warnbox{border-color:var(--warn);border-left-color:var(--warn);background:rgba(230,126,34,.06);}
+.ai-result .box b{color:#00e676;}
+.ai-result .box.warnbox b{color:var(--warn);}
+.ai-result .chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0;}
+.ai-result .chip2{font-size:10px;letter-spacing:.3px;padding:2px 8px;border:1px solid #3d3d3d;color:var(--gold);background:rgba(201,168,76,.06);}
+.ai-loading{font-size:12px;color:#00e676;padding:8px 0;}
 </style>
 </head>
 <body>
@@ -269,6 +303,28 @@ select option{background:var(--black);}
   </div>
 
   <div id="form-area">
+
+    <!-- 00 AI FREE-TEXT INPUT (v6 Phase 2 + LLM) -->
+    <div class="sec ai-sec">
+      <div class="sec-title">🤖 AI INPUT / AI自由記述 <span class="ai-badge">v6</span></div>
+      <div class="ai-lead" id="ai-lead">Describe the job in plain language — AI structures it, then the <b>🛡️ Hallucination Guard verifies</b> the AI's output before you quote. / 自由記述で入力 → AIが構造化 → <b>🛡️ ハルシネーション防止</b>がAI出力を検証してから見積もりへ。</div>
+      <textarea id="aiText" placeholder="例: 築20年の木造2階建て、外壁80㎡、ひび割れあり、油性から水性に塗り替えたい。&#10;e.g. 20yo weatherboard house, 2 storeys, 80m² exterior, peeling paint, switching oil to water-based."></textarea>
+      <div class="ai-controls">
+        <button class="ai-parse" onclick="parseFreeText()">⚡ <span id="ai-parse-lbl">PARSE / 解析</span></button>
+        <span class="ai-mode-pill" id="aiModePill">Demo (offline)</span>
+        <button class="ai-gear" onclick="toggleAiSettings()">⚙️ API Key</button>
+      </div>
+      <div class="ai-settings" id="aiSettings">
+        <input type="password" id="aiKey" placeholder="sk-ant-... (optional — leave blank for demo)" autocomplete="off">
+        <div class="row">
+          <button class="save" onclick="saveAiKey()">Save / 保存</button>
+          <button class="clear" onclick="clearAiKey()">Clear / 削除</button>
+          <span style="font-size:10px;color:#8a857c" id="aiKeyState"></span>
+        </div>
+        <div class="hint" id="ai-key-hint">🔒 Your Claude API key is stored only in this browser (localStorage) and sent directly to Anthropic — never to us. Blank = offline demo parser. / 🔑 キーはこの端末（localStorage）のみに保存、Anthropicに直接送信。空欄=オフラインのデモ解析。</div>
+      </div>
+      <div class="ai-result" id="aiResult"></div>
+    </div>
 
     <!-- 01 CLIENT -->
     <div class="sec">
@@ -876,6 +932,8 @@ function setLang(l){
   buildSurfCards(); buildItemCards(); buildExtras();
   recalcAll();
   updateV6Labels(l);
+  updateAiModePill();
+  refreshAiKeyState();
   if(document.getElementById('historyView').style.display!=='none')renderHistory();
 }
 
@@ -1359,12 +1417,168 @@ function toast(msg){
   _toastTimer=setTimeout(()=>el.classList.remove('show'),2800);
 }
 
+// ══════════════════════════════════════════════════════════════════
+// ── v6: AI FREE-TEXT INPUT (LLM structuring → Guard verifies) ───────
+// ══════════════════════════════════════════════════════════════════
+const AI_KEY_LS='sps_ai_key_v6';
+const JOB_MAP={Exterior:'Exterior / 外壁',Interior:'Interior / 屋内','New Build':'New Build / 新築',Renovation:'Renovation / リノベ',Roof:'Roof / 屋根',Commercial:'Commercial / 商業'};
+
+function toggleAiSettings(){document.getElementById('aiSettings').classList.toggle('show');refreshAiKeyState();}
+function loadAiKey(){return (localStorage.getItem(AI_KEY_LS)||'').trim();}
+function saveAiKey(){
+  const v=document.getElementById('aiKey').value.trim();
+  if(v)localStorage.setItem(AI_KEY_LS,v); else localStorage.removeItem(AI_KEY_LS);
+  refreshAiKeyState(); updateAiModePill();
+  toast(v?(lang==='en'?'API key saved on this device':'APIキーを保存しました'):(lang==='en'?'API key cleared — demo mode':'APIキー削除 — デモモード'));
+}
+function clearAiKey(){localStorage.removeItem(AI_KEY_LS);document.getElementById('aiKey').value='';refreshAiKeyState();updateAiModePill();toast(lang==='en'?'API key cleared — demo mode':'APIキー削除 — デモモード');}
+function refreshAiKeyState(){const el=document.getElementById('aiKeyState');if(el)el.textContent=loadAiKey()?(lang==='en'?'● key set':'● 設定済み'):(lang==='en'?'○ no key (demo)':'○ 未設定（デモ）');}
+function updateAiModePill(){const p=document.getElementById('aiModePill');if(!p)return;const has=!!loadAiKey();p.textContent=has?(lang==='en'?'Claude API (live)':'Claude API（本番）'):(lang==='en'?'Demo (offline)':'デモ（オフライン）');p.classList.toggle('live',has);}
+
+// ── DEMO PARSER (offline, keyword-based) — clearly labelled as a simulation ──
+function parseDemo(text){
+  const t=(text||'').toLowerCase();
+  const has=(...ks)=>ks.some(k=>text.includes(k)||t.includes(k.toLowerCase()));
+  const jobs=[];
+  if(has('外壁','exterior')) jobs.push('Exterior');
+  if(has('屋内','室内','内壁','interior')) jobs.push('Interior');
+  if(has('新築','new build','newbuild')) jobs.push('New Build');
+  if(has('リノベ','改装','renovation')) jobs.push('Renovation');
+  if(has('屋根','roof')) jobs.push('Roof');
+  if(has('商業','店舗','commercial')) jobs.push('Commercial');
+  let material='plaster';
+  if(has('木','ウッド','weatherboard','timber','wood')) material='timber';
+  else if(has('アルミ','aluminium','aluminum')) material='aluminium';
+  else if(has('コンクリート','セメント','concrete','cement')) material='concrete';
+  else if(has('鉄','スチール','steel','iron')) material='steel';
+  else if(has('ファイバー','fibre','fiber cement')) material='fibre';
+  let condition='water_good';
+  if(has('油性から水性','油性→水性','oil to water','oil→water','oil-to-water','switching oil')) condition='oil_switch';
+  else if(has('剥離','はがれ','剥がれ','peel','peeling','flaking')) condition='water_bad';
+  else if(has('劣化','色あせ','チョーキング','fair','faded','chalking')) condition='water_fair';
+  else if(has('油性継続','oil-based topcoat','staying oil')) condition='oil_cont';
+  else if(has('不明','わからない','unknown','not sure')) condition='unknown';
+  else if(has('新築','塗膜なし','bare','no paint','unpainted')) condition='new';
+  let area=0; const am=text.match(/(\d+(?:\.\d+)?)\s*(?:㎡|m2|m²|平米|平方)/i); if(am) area=parseFloat(am[1]);
+  let stories=1; const sm=text.match(/(\d+)\s*(?:階建|階|storey|story|floor)/i); if(sm) stories=Math.min(3,Math.max(1,parseInt(sm[1]))); else if(has('平屋','single storey','single-storey')) stories=1;
+  let coats=2; const cm=text.match(/(\d+)\s*(?:回塗|度塗|coats?)/i); if(cm) coats=Math.min(3,Math.max(1,parseInt(cm[1])));
+  let surfId='exterior';
+  if(has('天井','ceiling')) surfId='ceiling';
+  else if(has('屋根','roof')) surfId='roof';
+  else if(has('床','デッキ','floor','deck')) surfId='floor';
+  else if(has('フェンス','塀','fence')) surfId='fence';
+  else if((has('屋内','室内','内壁','interior'))&&!has('外壁','exterior')) surfId='wall';
+  return {
+    jobs:[...new Set(jobs)],
+    surfaces:[{id:surfId,area:area||0,material,condition,coats}],
+    stories, notes:(text||'').trim().slice(0,220),
+    _demo:true
+  };
+}
+
+// ── LIVE PARSER (Claude API, browser-direct with user key) ──
+async function parseAPI(text,key){
+  const schema={type:'object',additionalProperties:false,
+    properties:{
+      jobs:{type:'array',items:{type:'string',enum:['Exterior','Interior','New Build','Renovation','Roof','Commercial']}},
+      surfaces:{type:'array',items:{type:'object',additionalProperties:false,
+        properties:{
+          id:{type:'string',enum:['ceiling','wall','exterior','roof','floor','fence']},
+          area:{type:'number'},
+          material:{type:'string',enum:['plaster','timber','aluminium','concrete','steel','fibre']},
+          condition:{type:'string',enum:['new','water_good','water_fair','water_bad','oil_cont','oil_switch','unknown']},
+          coats:{type:'integer'}
+        },required:['id','area','material','condition','coats']}},
+      stories:{type:'integer'},
+      notes:{type:'string'}
+    },required:['jobs','surfaces','stories','notes']};
+  const sys="You extract structured data for a NSW (Australia) house-painting quote from a free-text job description (English or Japanese). Map to the given enums. surfaces[].id: ceiling/wall(interior)/exterior/roof/floor/fence. material: plaster/timber/aluminium/concrete/steel/fibre. condition: new, water_good, water_fair, water_bad(peeling), oil_cont(oil→oil), oil_switch(oil→water), unknown. area in m² (0 if not stated). stories 1-3. coats 1-3 (default 2). Only include surfaces explicitly implied. Do not invent numbers not present in the text — use 0 for unknown area. Return notes as a short paraphrase.";
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-opus-4-8',max_tokens:1024,system:sys,messages:[{role:'user',content:text}],output_config:{format:{type:'json_schema',schema}}})
+  });
+  if(!res.ok){let d='';try{d=(await res.json()).error?.message||'';}catch(e){}throw new Error((res.status)+(d?' — '+d:''));}
+  const data=await res.json();
+  const tb=(data.content||[]).find(b=>b.type==='text');
+  if(!tb)throw new Error('empty response');
+  return JSON.parse(tb.text);
+}
+
+// ── APPLY parsed data to the form (source of truth stays the form + Guard) ──
+function applyParsed(r){
+  selectedJobs=(r.jobs||[]).map(j=>JOB_MAP[j]).filter(Boolean);
+  document.querySelectorAll('.job-grid .chip').forEach(ch=>ch.classList.toggle('on',selectedJobs.includes(ch.dataset.job)));
+  if(r.stories) document.getElementById('stories').value=String(Math.min(3,Math.max(1,r.stories)));
+  (r.surfaces||[]).forEach(s=>{
+    if(!surfState[s.id])return;
+    const st=surfState[s.id];
+    st.on=true;
+    if(s.area) st.area=String(s.area);
+    if(s.material&&MATERIALS[s.material]) st.mat=s.material;
+    if(s.condition&&CONDITIONS[s.condition]) st.cond=s.condition;
+    if(s.coats) st.coats=Math.min(3,Math.max(1,s.coats));
+  });
+  if(r.notes) document.getElementById('notes').value=r.notes;
+  buildSurfCards();
+  recalcAll();
+}
+
+function renderAiResult(r,viaAPI){
+  const isEN=lang==='en';
+  const el=document.getElementById('aiResult');
+  const src=viaAPI?(isEN?'Claude (claude-opus-4-8)':'Claude（claude-opus-4-8）'):(isEN?'offline demo parser':'オフラインのデモ解析');
+  const mats={plaster:isEN?'Plaster':'プラスター',timber:isEN?'Timber':'木部',aluminium:isEN?'Aluminium':'アルミ',concrete:isEN?'Concrete':'コンクリート',steel:isEN?'Steel':'鉄',fibre:isEN?'Fibre Cement':'ファイバー'};
+  const conds={new:isEN?'New':'新築',water_good:isEN?'Water good':'水性良好',water_fair:isEN?'Water fair':'水性劣化',water_bad:isEN?'Peeling':'剥離',oil_cont:isEN?'Oil→Oil':'油性継続',oil_switch:isEN?'Oil→Water':'油性→水性',unknown:isEN?'Unknown':'不明'};
+  const chips=[];
+  (r.surfaces||[]).forEach(s=>{
+    const nm=(SURFS.find(x=>x.id===s.id)||{});
+    chips.push(`${isEN?(nm.en||s.id):(nm.ja||s.id)}${s.area?' '+s.area+'m²':''}`);
+    chips.push(`${mats[s.material]||s.material}`);
+    chips.push(`${conds[s.condition]||s.condition}`);
+  });
+  (r.jobs||[]).forEach(j=>chips.push(j));
+  const noArea=(r.surfaces||[]).some(s=>!s.area);
+  el.innerHTML=`
+    <div class="box ${noArea?'warnbox':''}">
+      <b>🤖 ${isEN?'AI extracted':'AIが抽出'}</b> ${isEN?'via':'—'} ${src}:
+      <div class="chips">${chips.map(c=>`<span class="chip2">${c}</span>`).join('')}</div>
+      ${noArea?(isEN?'⚠️ No area detected — enter it below before generating.':'⚠️ 面積未検出 — 下で入力してから生成してください。'):''}
+      <div style="margin-top:6px">🛡️ <b>${isEN?'Now the Hallucination Guard verifies this':'次にハルシネーション防止が検証'}</b> — ${isEN?'review the form below, keep 🛡️ STRICT on, and press GENERATE. The 12-point engine re-checks the AI numbers, contradictions, and market rates.':'下のフォームを確認し、🛡️ STRICTをONのまま GENERATE を押してください。12項目エンジンがAIの数値・矛盾・相場を再検証します。'}</div>
+    </div>`;
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+async function parseFreeText(){
+  const text=document.getElementById('aiText').value.trim();
+  const isEN=lang==='en';
+  if(!text){toast(isEN?'Enter a description first':'説明を入力してください');return;}
+  const key=loadAiKey();
+  const el=document.getElementById('aiResult');
+  el.innerHTML=`<div class="ai-loading">⏳ ${key?(isEN?'Asking Claude…':'Claudeに問い合わせ中…'):(isEN?'Parsing (demo)…':'解析中（デモ）…')}</div>`;
+  let parsed,viaAPI=false;
+  try{
+    if(key){parsed=await parseAPI(text,key);viaAPI=true;}
+    else{parsed=parseDemo(text);}
+  }catch(e){
+    parsed=parseDemo(text);viaAPI=false;
+    el.innerHTML=`<div class="box warnbox"><b>❌ ${isEN?'Claude API failed':'Claude API 失敗'}</b> (${e.message}) — ${isEN?'fell back to the offline demo parser.':'オフラインのデモ解析に切替えました。'}</div>`;
+    applyParsed(parsed);
+    setTimeout(()=>renderAiResult(parsed,false),50);
+    return;
+  }
+  applyParsed(parsed);
+  renderAiResult(parsed,viaAPI);
+}
+
 // ── INIT ────────────────────────────────────────────────────────────
 buildSurfCards();
 buildItemCards();
 buildExtras();
 updateHistCount();
 updateV6Labels('en');
+updateAiModePill();
+refreshAiKeyState();
 </script>
 </body>
 </html>

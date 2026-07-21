@@ -151,7 +151,7 @@ v5では **ハルシネーション防止プロトコル v1.0** を導入。見�
 **[English]**  
 v6 adds two things on top of v5: an **AI free-text input** and a **persistence layer**.
 
-**🤖 AI free-text input (LLM × Guard):** describe the job in plain English or Japanese ("20yo weatherboard house, 2 storeys, 80m² exterior, peeling paint, switching oil to water") and the tool structures it into the form — then the **12-point Hallucination Guard verifies the AI's own output** (numbers, contradictions, NSW market rates) before you quote. This is the portfolio thesis in one flow: *an LLM is fast but hallucinates; a rules engine is exact but rigid — combine them so each covers the other's weakness.* Runs on the offline **demo parser** by default (no key, works for everyone); enter your own Claude API key to switch on real `claude-opus-4-8` extraction. The key is stored only in your browser and sent directly to Anthropic.
+**🤖 AI free-text input (LLM × Guard):** describe the job in plain English or Japanese ("20yo weatherboard house, 2 storeys, 80m² exterior, peeling paint, switching oil to water") and the tool structures it into the form — then the **13-point Hallucination Guard verifies the AI's own output** (paint volume & cost, contradictions, NSW market rates) before you quote. This is the portfolio thesis in one flow: *an LLM is fast but hallucinates; a rules engine is exact but rigid — combine them so each covers the other's weakness.* Runs on the offline **demo parser** by default (no key, works for everyone); enter your own Claude API key to switch on real `claude-opus-4-8` extraction. The key is stored only in your browser and sent directly to Anthropic.
 
 **📂 Persistence layer:** every generated quote can be saved and reused, turning the tool from a one-shot calculator into a lightweight quote ledger.
 
@@ -160,14 +160,14 @@ v6 adds two things on top of v5: an **AI free-text input** and a **persistence l
 - ↩ **Restore** — reopen any past quote in one click to edit and regenerate
 - ⧉ **Duplicate** — spin off an alternate plan for the same client under a new quote number
 - 📤📥 **JSON Export / Import** — back up or move all data between devices
-- Compact quote cards show **total area (m²)** and **paint volume (L)** at a glance; a 🛡️ **Verified** chip marks quotes that passed the 12-point Guard
+- Compact quote cards show **total area (m²)** and **paint volume (L)** at a glance; a 🛡️ **Verified** chip marks quotes that passed the 13-point Guard
 
 Data is stored locally in the browser (`localStorage`) — **no server, no API, single HTML file**, GitHub Pages–ready.
 
 **[日本語]**  
 v6ではv5の上に **AI自由記述入力** と **永続化層** の2つを追加しました。
 
-**🤖 AI自由記述入力（LLM × Guard）：** 「築20年の木造2階建て、外壁80㎡、ひび割れあり、油性から水性に塗り替え」のように自由に書くと、AIがフォームに構造化 → その後 **12項目のハルシネーション防止がAI自身の出力を検証**（数値・矛盾・NSW相場）してから見積もりへ進みます。これは本ポートフォリオの主張を1つの流れで体現します：*LLMは速いが幻覚する／ルールエンジンは正確だが融通が利かない → 組み合わせて互いの弱点を消す。* 既定では鍵不要の**オフラインのデモ解析**で誰でも動作。自分のClaude APIキーを入れると本物の `claude-opus-4-8` 抽出に切替。キーはブラウザ内のみに保存され、Anthropicへ直接送信されます。
+**🤖 AI自由記述入力（LLM × Guard）：** 「築20年の木造2階建て、外壁80㎡、ひび割れあり、油性から水性に塗り替え」のように自由に書くと、AIがフォームに構造化 → その後 **13項目のハルシネーション防止がAI自身の出力を検証**（塗料量・塗料金額・矛盾・NSW相場）してから見積もりへ進みます。これは本ポートフォリオの主張を1つの流れで体現します：*LLMは速いが幻覚する／ルールエンジンは正確だが融通が利かない → 組み合わせて互いの弱点を消す。* 既定では鍵不要の**オフラインのデモ解析**で誰でも動作。自分のClaude APIキーを入れると本物の `claude-opus-4-8` 抽出に切替。キーはブラウザ内のみに保存され、Anthropicへ直接送信されます。
 
 **📂 永続化層：** 生成した見積もりを保存・再利用でき、単発の計算ツールから軽量な**見積もり台帳**へと進化。
 
@@ -176,11 +176,11 @@ v6ではv5の上に **AI自由記述入力** と **永続化層** の2つを追�
 - ↩ **復元** — 過去の見積もりをワンクリックで再表示・編集・再生成
 - ⧉ **複製** — 同じ顧客の別プランを新しい見積番号で作成
 - 📤📥 **JSONエクスポート／インポート** — 全データのバックアップ・端末間移行
-- コンパクトなカードに**総面積（m²）**と**塗料量（L）**を表示。12項目のGuardを通過した見積もりには🛡️**検証済**チップを表示
+- コンパクトなカードに**総面積（m²）**と**塗料量（L）**を表示。13項目のGuardを通過した見積もりには🛡️**検証済**チップを表示
 
 データはブラウザ内（`localStorage`）に保存 — **サーバー不要・API不要・単一HTML**、GitHub Pages対応。
 
-**Portfolio significance:** Demonstrates "AI verifying AI" end-to-end — an LLM proposes the structured quote, a deterministic 12-point engine audits it, and a persistence layer keeps the verified results as a real quote ledger. Deep field expertise (27 years) plus AI plus guardrails, in one self-contained page.
+**Portfolio significance:** Demonstrates "AI verifying AI" end-to-end — an LLM proposes the structured quote, a deterministic 13-point engine audits it, and a persistence layer keeps the verified results as a real quote ledger. Deep field expertise (27 years) plus AI plus guardrails, in one self-contained page.
 
 ---
 

@@ -1223,6 +1223,27 @@ function runVerification(){
     }
   });
 
+  // CHECK 13: Paint COST re-verification (independent recalculation, per-face aware)
+  activeSurfs.forEach(s=>{
+    const st=surfState[s.id];
+    const r=calcSurf(s);
+    if(!r||!r.area)return;
+    let expectedCost;
+    if(st.split&&st.faces&&st.faces.length){
+      expectedCost=st.faces.reduce((sum,f)=>{const a=parseFloat(f.area)||0;if(!a)return sum;const m=MATERIALS[f.mat]||MATERIALS[s.defMat];const c=CONDITIONS[f.cond]||CONDITIONS.water_good;const L=(a/s.cov)*((f.coats||st.coats)+(c.coatAdd||0))*m.paintMult;return sum+L*(PAINT_L[f.grade]||PAINT_L[st.grade]);},0);
+    } else {
+      const mat=MATERIALS[st.mat];const cond=CONDITIONS[st.cond];
+      const L=(r.area/s.cov)*(st.coats+(cond.coatAdd||0))*mat.paintMult;
+      expectedCost=L*PAINT_L[st.grade];
+    }
+    const diff=Math.abs(expectedCost-r.paintCost);
+    if(diff>0.01){
+      checks.push({status:'fail',msg:isEN?`${s.en}: Paint COST mismatch — expected $${expectedCost.toFixed(2)}, got $${r.paintCost.toFixed(2)} (calculation error)`:`${s.ja}: 塗料金額 不一致 — 期待値$${expectedCost.toFixed(2)}、実値$${r.paintCost.toFixed(2)}（計算エラー）`});
+    } else {
+      checks.push({status:'pass',msg:isEN?`${s.en}: Paint cost verified — $${r.paintCost.toFixed(2)} (litres × grade price, re-calculated)`:`${s.ja}: 塗料金額 検証済み — $${r.paintCost.toFixed(2)}（塗料量×グレード単価で独立再計算）`});
+    }
+  });
+
   return checks;
 }
 

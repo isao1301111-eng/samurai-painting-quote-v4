@@ -1,9 +1,12 @@
 # Samurai Painting Quote Tool v4 → v6
 **Smart Quotation Tool for Professional Painters / プロ塗装職人向けスマート見積もりツール**
 
-[![v4 Live Demo](https://img.shields.io/badge/v4_Live_Demo-Click_Here-blue)](https://isao1301111-eng.github.io/samurai-painting-quote-v4/)
-[![v5 + Hallucination Guard](https://img.shields.io/badge/v5_%F0%9F%9B%A1%EF%B8%8F_Hallucination_Guard-Try_Now-00e676)](https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v5.html)
-[![v6 + Saved History](https://img.shields.io/badge/v6_%F0%9F%93%82_Saved_History-Try_Now-C9A84C)](https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v6.html)
+[![v4 Live Demo](https://img.shields.io/badge/v4_Live_Demo-Click_Here-blue)](https://isao1301111-eng.github.io/samurai-painting-quote/)
+[![v5 + Hallucination Guard](https://img.shields.io/badge/v5_%F0%9F%9B%A1%EF%B8%8F_Hallucination_Guard-Try_Now-00e676)](https://isao1301111-eng.github.io/samurai-painting-quote/samurai-painting-quote-v5.html)
+[![v6 + Saved History](https://img.shields.io/badge/v6_%F0%9F%93%82_Saved_History-Try_Now-C9A84C)](https://isao1301111-eng.github.io/samurai-painting-quote/samurai-painting-quote-v6.html)
+
+> 🧑‍💼 **This is the working application repository (v4 → v6).**
+> ポートフォリオ紹介ページ / Portfolio write-up: [**samurai-painting-quote-portfolio**](https://github.com/isao1301111-eng/samurai-painting-quote-portfolio)
 
 ---
 
@@ -38,9 +41,9 @@ Automatic warnings are shown for common on-site risks (e.g., switching from oil-
 
 | Version | URL |
 |---|---|
-| **v4** | [https://isao1301111-eng.github.io/samurai-painting-quote-v4/](https://isao1301111-eng.github.io/samurai-painting-quote-v4/) |
-| **v5 🛡️** | [https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v5.html](https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v5.html) |
-| **v6 📂** | [https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v6.html](https://isao1301111-eng.github.io/samurai-painting-quote-v4/samurai-painting-quote-v6.html) |
+| **v4** | [https://isao1301111-eng.github.io/samurai-painting-quote/](https://isao1301111-eng.github.io/samurai-painting-quote/) |
+| **v5 🛡️** | [https://isao1301111-eng.github.io/samurai-painting-quote/samurai-painting-quote-v5.html](https://isao1301111-eng.github.io/samurai-painting-quote/samurai-painting-quote-v5.html) |
+| **v6 📂** | [https://isao1301111-eng.github.io/samurai-painting-quote/samurai-painting-quote-v6.html](https://isao1301111-eng.github.io/samurai-painting-quote/samurai-painting-quote-v6.html) |
 
 ---
 

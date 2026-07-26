@@ -67,14 +67,14 @@ Over **27 years** working in architectural painting — **15 years in the Kanto 
 
 This tool was built to solve that — packaging real field knowledge into a practical digital system.
 
-I am currently transitioning my career toward **AI Consulting and Digital Automation** in the construction and DX space, and relocating to the **Kanto region (Tokyo / Kanagawa)** in October 2026. This is **Portfolio #1**, demonstrating how deep industry expertise can be combined with digital tools to create real value.
+I am currently transitioning my career toward **AI Consulting and Digital Automation** in the construction and DX space, and relocating to the **Kanto region (Tokyo / Kanagawa)** in September 2026. This is **Portfolio #1**, demonstrating how deep industry expertise can be combined with digital tools to create real value.
 
 **[日本語]**  
 関東（東京・神奈川）で**15年**、シドニーで**12年**、合計**27年間**にわたって建築塗装の現場に携わってきました。その中で何度も経験したのが「材質や既存塗膜の状態を見誤ったことで、後から追加費用や問題が発生する」というケースです。
 
 このツールは、そうした現場のリアルな知見をデジタル化したものです。
 
-現在、建築・DX分野での**AIコンサルタント・AI自動化フリーランス**へのキャリアチェンジを進めており、2026年10月に**関東（東京・神奈川周辺）**に帰国予定です。このツールは**ポートフォリオ第1弾**として、現場経験とデジタルツールを組み合わせた実践的な価値を体現しています。
+現在、建築・DX分野での**AIコンサルタント・AI自動化フリーランス**へのキャリアチェンジを進めており、2026年9月21日に**関東（東京・神奈川周辺）**に帰国予定です。このツールは**ポートフォリオ第1弾**として、現場経験とデジタルツールを組み合わせた実践的な価値を体現しています。
 
 ---
 
@@ -196,7 +196,7 @@ v6ではv5の上に **AI自由記述入力** と **永続化層** の2つを追�
   - 12 years: Sydney, Australia（シドニー、オーストラリア）
 - Founder, Samurai Painting Services（Samurai Painting Services 代表）
 - AI Consultant / AI Automation Specialist（AIコンサルタント・AI自動化 転換中）
-- Returning to Kanto, Japan — October 2026（2026年10月 関東帰国予定）
+- Returning to Kanto, Japan — September 2026（2026年9月21日 関東帰国予定）
 
 **Contact / 連絡先**
 - Email: isao1301111@gmail.com

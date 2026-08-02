@@ -527,12 +527,12 @@ const CONDITIONS={
 
 // ── SURFACES ─────────────────────────────────────────────────────
 const SURFS=[
-  {id:'ceiling', en:'Ceiling',         ja:'天井',       icon:'⬜', baseLab:22, cov:12, defCoats:2, defGrade:'premium', defMat:'plaster',   defCond:'water_good'},
-  {id:'wall',    en:'Wall (Interior)',  ja:'壁（屋内）', icon:'🧱', baseLab:22, cov:12, defCoats:2, defGrade:'premium', defMat:'plaster',   defCond:'water_good', faceable:true},
-  {id:'exterior',en:'Exterior Wall',   ja:'外壁',       icon:'🏠', baseLab:30, cov:10, defCoats:2, defGrade:'premium', defMat:'plaster',   defCond:'water_good', faceable:true},
-  {id:'roof',    en:'Roof',            ja:'屋根',       icon:'🏚️', baseLab:35, cov:9,  defCoats:2, defGrade:'premium', defMat:'steel',     defCond:'water_good'},
-  {id:'floor',   en:'Floor / Deck',    ja:'床・デッキ', icon:'🟫', baseLab:24, cov:10, defCoats:1, defGrade:'standard',defMat:'timber',    defCond:'water_good'},
-  {id:'fence',   en:'Fence',           ja:'フェンス',   icon:'🪵', baseLab:20, cov:10, defCoats:2, defGrade:'standard',defMat:'timber',    defCond:'water_good'},
+  {id:'ceiling', en:'Ceiling',         ja:'天井',       icon:'⬜', baseLab:22, cov:9,  paintL:22, defCoats:2, defGrade:'premium', defMat:'plaster',   defCond:'water_good'},
+  {id:'wall',    en:'Wall (Interior)',  ja:'壁（屋内）', icon:'🧱', baseLab:22, cov:9,  paintL:22, defCoats:2, defGrade:'premium', defMat:'plaster',   defCond:'water_good', faceable:true},
+  {id:'exterior',en:'Exterior Wall',   ja:'外壁',       icon:'🏠', baseLab:30, cov:8,  paintL:23, defCoats:2, defGrade:'premium', defMat:'plaster',   defCond:'water_good', faceable:true},
+  {id:'roof',    en:'Roof',            ja:'屋根',       icon:'🏚️', baseLab:35, cov:8,  paintL:23, defCoats:2, defGrade:'premium', defMat:'steel',     defCond:'water_good'},
+  {id:'floor',   en:'Floor / Deck',    ja:'床・デッキ', icon:'🟫', baseLab:24, cov:8,  paintL:23, defCoats:1, defGrade:'standard',defMat:'timber',    defCond:'water_good'},
+  {id:'fence',   en:'Fence',           ja:'フェンス',   icon:'🪵', baseLab:20, cov:8,  paintL:23, defCoats:2, defGrade:'standard',defMat:'timber',    defCond:'water_good'},
 ];
 
 // ── LINE ITEMS ────────────────────────────────────────────────────
@@ -558,6 +558,7 @@ const EXTRAS=[
 ];
 
 const PAINT_L={standard:6.5, premium:10.5, luxury:15};
+const PAINT_WASTE=1.10; // 塗料ロス係数（こぼれ・ローラー吸込み・缶残り）。面ごとの実勢L単価は SURFS.paintL を使用（グレードでは変えない＝一律）
 const STORY_M={1:1,2:1.25,3:1.5};
 
 // ── SURFACE STATES ─────────────────────────────────────────────────
@@ -815,8 +816,8 @@ function calcUnit(s,matKey,condKey,area,coatsBase,gradeKey){
   const labRate=(s.baseLab+(labBase-30))*STORY_M[stories]*mat.labMult*(1+(cond.labAdd/100));
   const prepRate=defaultPrep+mat.prepAdd+cond.prepAdd;
   const coats=coatsBase+(cond.coatAdd||0);
-  const liters=(area/s.cov)*coats*mat.paintMult;
-  const paintCost=liters*PAINT_L[gradeKey];
+  const liters=(area/s.cov)*coats*mat.paintMult*PAINT_WASTE;
+  const paintCost=liters*(s.paintL||PAINT_L[gradeKey]);
   const labCost=area*labRate;
   const prepCost=area*prepRate;
   return {area,coats,grade:gradeKey,liters,paintCost,labCost,prepCost,tot:paintCost+labCost+prepCost,labRate,prepRate,matKey,condKey,matName:lang==='en'?mat.en:mat.ja,condName:lang==='en'?cond.en:cond.ja,coatAdd:cond.coatAdd||0,warn:cond.warn,matNote:mat.note,condNote:cond.note};

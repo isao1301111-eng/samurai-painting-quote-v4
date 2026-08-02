@@ -1202,10 +1202,10 @@ function runVerification(){
     if(!r||!r.area)return;
     let expectedLiters;
     if(st.split&&st.faces&&st.faces.length){
-      expectedLiters=st.faces.reduce((sum,f)=>{const a=parseFloat(f.area)||0;if(!a)return sum;const m=MATERIALS[f.mat]||MATERIALS[s.defMat];const c=CONDITIONS[f.cond]||CONDITIONS.water_good;return sum+(a/s.cov)*((f.coats||st.coats)+(c.coatAdd||0))*m.paintMult;},0);
+      expectedLiters=st.faces.reduce((sum,f)=>{const a=parseFloat(f.area)||0;if(!a)return sum;const m=MATERIALS[f.mat]||MATERIALS[s.defMat];const c=CONDITIONS[f.cond]||CONDITIONS.water_good;return sum+(a/s.cov)*((f.coats||st.coats)+(c.coatAdd||0))*m.paintMult*PAINT_WASTE;},0);
     } else {
       const mat=MATERIALS[st.mat];const cond=CONDITIONS[st.cond];
-      expectedLiters=(r.area/s.cov)*(st.coats+(cond.coatAdd||0))*mat.paintMult;
+      expectedLiters=(r.area/s.cov)*(st.coats+(cond.coatAdd||0))*mat.paintMult*PAINT_WASTE;
     }
     const diff=Math.abs(expectedLiters-r.liters);
     if(diff>0.01){
@@ -1250,11 +1250,11 @@ function runVerification(){
     if(!r||!r.area)return;
     let expectedCost;
     if(st.split&&st.faces&&st.faces.length){
-      expectedCost=st.faces.reduce((sum,f)=>{const a=parseFloat(f.area)||0;if(!a)return sum;const m=MATERIALS[f.mat]||MATERIALS[s.defMat];const c=CONDITIONS[f.cond]||CONDITIONS.water_good;const L=(a/s.cov)*((f.coats||st.coats)+(c.coatAdd||0))*m.paintMult;return sum+L*(PAINT_L[f.grade]||PAINT_L[st.grade]);},0);
+      expectedCost=st.faces.reduce((sum,f)=>{const a=parseFloat(f.area)||0;if(!a)return sum;const m=MATERIALS[f.mat]||MATERIALS[s.defMat];const c=CONDITIONS[f.cond]||CONDITIONS.water_good;const L=(a/s.cov)*((f.coats||st.coats)+(c.coatAdd||0))*m.paintMult*PAINT_WASTE;return sum+L*(s.paintL||PAINT_L[f.grade]||PAINT_L[st.grade]);},0);
     } else {
       const mat=MATERIALS[st.mat];const cond=CONDITIONS[st.cond];
-      const L=(r.area/s.cov)*(st.coats+(cond.coatAdd||0))*mat.paintMult;
-      expectedCost=L*PAINT_L[st.grade];
+      const L=(r.area/s.cov)*(st.coats+(cond.coatAdd||0))*mat.paintMult*PAINT_WASTE;
+      expectedCost=L*(s.paintL||PAINT_L[st.grade]);
     }
     const diff=Math.abs(expectedCost-r.paintCost);
     if(diff>0.01){
